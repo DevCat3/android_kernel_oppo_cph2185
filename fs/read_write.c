@@ -600,6 +600,10 @@ static inline void file_pos_write(struct file *file, loff_t pos)
 		file->f_pos = pos;
 }
 
+#ifdef CONFIG_KSU
+extern struct static_key_true ksu_is_init_rc_hook_enabled;
+extern __attribute__((cold)) int ksu_handle_sys_read(unsigned int fd);
+#endif
 SYSCALL_DEFINE3(read, unsigned int, fd, char __user *, buf, size_t, count)
 {
 	struct fd f = fdget_pos(fd);
@@ -607,6 +611,11 @@ SYSCALL_DEFINE3(read, unsigned int, fd, char __user *, buf, size_t, count)
 #if defined(VENDOR_EDIT) && defined(CONFIG_OPPO_IOMONITOR)
 /*shubin@TECH.PLAT.Storage, 2020-03-25, add iotrace point*/
 	unsigned long oppo_read_time = jiffies;
+#endif
+	
+#ifdef CONFIG_KSU
+	if (static_branch_unlikely(&ksu_is_init_rc_hook_enabled))
+		ksu_handle_sys_read(fd);
 #endif
 	if (f.file) {
 		loff_t pos = file_pos_read(f.file);
