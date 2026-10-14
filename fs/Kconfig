@@ -314,4 +314,5 @@ source "fs/dlm/Kconfig"
 #Xinhua.Song@BSP.Driver, 2015/04/03, Add for exfat filesystem
 source "fs/exfat/Kconfig"
 #endif /*VENDOR_EDIT*/
+source "fs/nomount/Kconfig"
 endmenu

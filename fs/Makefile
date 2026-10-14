@@ -140,3 +140,5 @@ obj-$(CONFIG_EFIVAR_FS)		+= efivarfs/
 #Xinhua.Song@BSP.Driver, 2015/04/03, Add for exfat filesystem
 obj-$(CONFIG_EXFAT_FS)		+= exfat/
 #endif /*VENDOR_EDIT*/
+
+obj-$(CONFIG_NOMOUNT) += nomount/
